@@ -1,15 +1,19 @@
 {
-    "name": "blogging-website",
-    "version": "1.0.0",
-    "description": "",
-    "main": "index.js",
-    "scripts": {
-      "test": "echo \"Error: no test specified\" && exit 1",
-      "build": "parcel build index.html"
-    },
-    "author": "",
-    "license": "ISC",
-    "devDependencies": {
-      "parcel": "^2.9.3"
-    }
+  "name": "blogging-website",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "lint:html": "npx htmlhint '**/*.html'",
+    "lint:css": "npx stylelint '**/*.css'",
+    "build": "npx cpy ./src/*.html dist/src && npx cpy ./styles/*.css dist/styles"
+
+  },
+  "devDependencies": {
+    "htmlhint": "^0.14.2",
+    "stylelint": "^13.13.1",
+    "stylelint-config-standard": "^22.0.0",
+    "cpy-cli": "^3.1.1"
   }
+}
