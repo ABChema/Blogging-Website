@@ -35,28 +35,42 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      # Build static website using Parcel
+      # Build static website
       - name: Build website
-        run: |
-          npx parcel build "." --dist-dir "./dev" --public-url "./"
-      
+        run: npm run build
+
       # Upload build artifact
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: "./dev"  # The build output folder
+          path: '.'  # Ensure this points to your actual build output folder
 
-  deploy-develop-job:
+  deploy:
     name: Deploy to GitHub Pages
-    needs: build  # Ensure the deploy step runs after the build
-    environment: "deployment-env"
-    permissions:
-      pages: write
-      id-token: write
     runs-on: ubuntu-latest
+    needs: build
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
     steps:
+      # Checkout code
       - name: Checkout code
         uses: actions/checkout@v3
 
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+        with:
+          enablement: true  # Ensure GitHub Pages is properly set up
+
+      # Upload artifact to Pages
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: '.'  # Point to your build output folder
+          name: ${{ github.run_id }}
+
+      # Deploy to GitHub Pages
       - name: Deploy to GitHub Pages
+        id: deployment
         uses: actions/deploy-pages@v4
