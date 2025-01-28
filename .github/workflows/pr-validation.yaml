@@ -11,74 +11,57 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # Checkout the repository
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # Set up Node.js
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '20'
-  # Install HTMLHint
-      - name: Install HTMLHint
-        run: npm install -g htmlhint
 
-      # Lint HTML files
-      - name: Run HTMLHint
+      - name: Install dependencies
         run: |
-          htmlhint "/*.html" --rules tagname-lowercase:true,attr-lowercase:true,alt-require:true,id-unique:true,tag-pair:true
+          npm install --save-dev htmlhint  
+
+      - name: Lint HTML files with HTMLHint
+        run: npx htmlhint "**/*.html"  # Adjust the glob pattern if needed
 
   css-lint:
     name: Lint CSS Files
     runs-on: ubuntu-latest
 
     steps:
-      # Checkout the repository
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # Set up Node.js
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '20'
-   # Install Stylelint
-      - name: Install Stylelint
-        run: npm install -g stylelint stylelint-config-standard
 
-      # Lint CSS files
-      - name: Run Stylelint
+      - name: Install dependencies
         run: |
-          stylelint "/*.css" --config '{ 
-            "rules": { 
-              "declaration-block-no-duplicate-properties": true, 
-              "no-duplicate-selectors": true, 
-              "property-case": "lower", 
-              "value-keyword-case": "lower", 
-              "selector-type-case": "lower", 
-              "block-no-empty": true 
-            } 
-          }'
+          npm install --save-dev stylelint stylelint-config-standard
+
+  
+      - name: Lint CSS files with Stylelint and auto-fix
+        run: npx stylelint "**/*.css" --fix  # Automatically fix fixable issues in CSS files
 
   build:
     name: Build Static Website
     runs-on: ubuntu-latest
 
     steps:
-      # Checkout the repository
       - name: Checkout code
         uses: actions/checkout@v3
- # Set up Node.js
+
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '20'
 
-      # Install dependencies
       - name: Install dependencies
         run: npm install
 
-      # Build static website
       - name: Build website
-        run: npm run build
+        run: npm run build
