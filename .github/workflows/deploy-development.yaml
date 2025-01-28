@@ -38,7 +38,7 @@ jobs:
       # Build static website using Parcel
       - name: Build website
         run: |
-          npx parcel build "./src/index.html" --dist-dir "./dev" --public-url "./"
+          npx parcel build "." --dist-dir "./dev" --public-url "./"
       
       # Upload build artifact
       - name: Upload artifact
